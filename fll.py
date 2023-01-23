@@ -116,6 +116,11 @@ def mission_5():
     up()
     print('Elapsed time m5:', timer.now())
 
+def mission_9():
+    '''
+    Электростанция
+    '''
+
 # mission_2()
 # mission_13()
 #mission_5()
