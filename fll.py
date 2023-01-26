@@ -101,10 +101,10 @@ def mission_13():
     drive.move(2.5, speed=30)
     drive.move(6, steering=100)
     print('Elapsed time m13:', timer.now())
-    
+
 def mission_5():
     '''
-    умная сеть(розетка, вилка) 
+    умная сеть(розетка, вилка)
     '''
     a_line(amount=40)
     a_line(black=True)
@@ -120,7 +120,26 @@ def mission_9():
     '''
     Электростанция
     '''
+    drive.move(3)
+    a_line(42)
+    a_line(black=True)
+    drive.move(-3.5, speed=30)
+    drive.move(8.5, steering=-100, speed=30)
+    down()
+    drive.move(5, speed=30)
+    manipulator.run_to_position(255, CLOCK)
+    drive.move(3, speed=30)
+    manipulator.run_to_position(263, CLOCK)
+    drive.move(9, speed=30)
+    #drive.move(-11)
+    up()
+    drive.move(4, speed=30) 
+    drive.move(9, steering=100, speed=30)
+    drive.move(-8, speed=30)
+    down()
+    print('Elapsed time m9:', timer.now())
+
 
 # mission_2()
 # mission_13()
-#mission_5()
+mission_9()
