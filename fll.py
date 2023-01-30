@@ -57,6 +57,25 @@ def a_line(amount=None, black=None):
     drive.stop()
     hub.light_matrix.write('X')
 
+def b_line(amount=None, black=None):
+    hub.light_matrix.write('b')
+    Motor('D').set_degrees_counted(0)
+    while True:
+        if black:
+            if ColorSensor('A').get_color()=='black':
+                break
+        if amount:
+            c = Motor('D').get_degrees_counted()
+            x = c / 360 * 17.6
+            if x >= amount:
+                break
+        current = ColorSensor('B').get_reflected_light()
+        r = int(PWR + G*(AVG - current))
+        l = int(PWR - G*(AVG - current))
+        drive.start_tank_at_power(r, l)
+    drive.stop()
+    hub.light_matrix.write('X')
+
 def mission_6():
     '''
     гибридный автомабиль
@@ -118,9 +137,9 @@ def mission_5():
     left()
     drive.move(-2)
     down()
-    drive.move(-3)
+    drive.move(-5)
     up()
-    drive.move(7)
+    drive.move(9)
     right()
     print('Elapsed time m5:', timer.now())
 
@@ -148,6 +167,9 @@ def mission_9():
     print('Elapsed time m9:', timer.now())
 
 def mission_4():
+    '''
+    солнечная ферма(3 энэргетических элемента около энэргохранилища)
+    '''
     a_line(black=True)
     drive.move(4)
     left()
@@ -162,7 +184,68 @@ def mission_4():
     drive.move(10, steering=100)
     drive.move(100)
 
-# mission_2()
-# mission_13()
-# mission_5()
-mission_4()
+def mission_3():
+    '''
+    энэргохранилище
+    '''
+    drive.move(3)
+    a_line(42)
+    a_line(black=True)
+    drive.move(2)
+    right()
+    a_line(5)
+    drive.move(30)
+    a_line(black=True)
+    drive.move(3)
+    right()
+    a_line(black=True)
+    left()
+    drive.move(2)
+    drive.move(4.25, steering=100)
+    manipulator.run_to_position(240, CTRL_CLOCK, 30)
+    up()
+    drive.move(4.25, steering=100)
+    drive.move(-10)
+    a_line(black=True)
+    print('Elapsed time m3:', timer.now())
+
+def mission_7():
+    '''
+    ветряная турбина
+    '''
+    drive.move(44)
+    drive.move(4.25, steering=-100)
+    drive.move(-4.5)
+    manipulator.run_to_position(225, CTRL_CLOCK, 30)
+    for d in range(1, 5):
+        drive.move(7)
+        drive.move(-7)
+    drive.move(1)               
+    manipulator.run_to_position(230, CLOCK, 30)
+    drive.move(-3.5)
+    down()
+
+def mission_14():
+    '''
+    aкамуляторная батарея
+    '''
+    drive.move(7)
+    drive.move(13, steering=-100)
+    drive.move(39)
+    drive.start(-100, 30)
+    while True:
+        if ColorSensor('B').get_color()=='black':
+            break
+    drive.stop()
+    b_line(black=True)
+    drive.move(5)
+    b_line(35)
+    drive.move(4.25, steering=100)
+    drive.move(3)
+
+
+
+
+a_line(black=True)
+mission_7()
+mission_14()
