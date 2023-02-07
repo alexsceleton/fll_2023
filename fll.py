@@ -4,6 +4,11 @@ from time import sleep
 
 manipulator = Motor('E')
 manipulator.set_default_speed(100)
+manipulator.set_stop_action('brake')
+manipulator_11 = Motor('F')
+manipulator_11.set_default_speed(5)
+manipulator_11.set_stop_action('brake')
+
 
 
 
@@ -38,7 +43,7 @@ def right():
 def left():
     drive.move(8.5, steering=-100)
 
-def a_line(amount=None, black=None):
+def a_line(amount=None, black=None, power=PWR):
     hub.light_matrix.write('A')
     Motor('D').set_degrees_counted(0)
     while True:
@@ -51,8 +56,8 @@ def a_line(amount=None, black=None):
             if x >= amount:
                 break
         current = ColorSensor('A').get_reflected_light()
-        r = int(PWR + G*(AVG - current))
-        l = int(PWR - G*(AVG - current))
+        r = int(power + G*(AVG - current))
+        l = int(power - G*(AVG - current))
         drive.start_tank_at_power(l, r)
     drive.stop()
     hub.light_matrix.write('X')
@@ -88,7 +93,7 @@ def mission_6():
     up()
     print('Elapsed time:', timer.now())
 
-def mission_2():
+def mission_2_1():
     '''
     нефтяная платформа
     '''
@@ -184,9 +189,9 @@ def mission_4():
     drive.move(10, steering=100)
     drive.move(100)
 
-def mission_3():
+def mission_3_1():
     '''
-    энэргохранилище
+    энэргохранилище(три элемента)
     '''
     drive.move(3)
     a_line(42)
@@ -220,7 +225,7 @@ def mission_7():
     for d in range(1, 5):
         drive.move(7)
         drive.move(-7)
-    drive.move(1)               
+    drive.move(1)
     manipulator.run_to_position(230, CLOCK, 30)
     drive.move(-3.5)
     down()
@@ -243,9 +248,89 @@ def mission_14():
     drive.move(4.25, steering=100)
     drive.move(3)
 
+def mission_3_2():
+    '''
+    энэргохранилище(ящик)
+    '''
+    a_line(black=True)
+    drive.move(5)
+    a_line(black=True)
+    left()
+    drive.move(2)
+    drive.move(4.25, steering=100)
+    drive.move(-1.8)
+    manipulator.run_to_position(220, CTRL_CLOCK, 30)
+    drive.move(-7)
+    drive.move(2, steering=100)
+    drive.move(20)
+    drive.move(6.5, steering=100)
 
+def mission_15():
+    '''
+    домики
+    '''
+    drive.move(30)
+    up()
+    drive.move(-15)
 
+def mission_11_1():
+    '''
+    водохранилище(ближний водный элемент)
+    '''
+    down()
+    drive.move(-20)
 
-a_line(black=True)
-mission_7()
-mission_14()
+def mission_11_2():
+    '''
+    водохранилище(два дальнихэлемента)
+    '''
+    drive.move(3)
+    a_line(42)
+    a_line(black=True)
+    drive.move(12.75, steering=100)
+    drive.move(15)
+    drive.move(4.25, steering=-100)
+    down()
+    drive.move(3, steering=100, speed=10)
+    drive.move(3, steering=-100)
+    up()
+    drive.move(3, steering=100, speed=10)
+    down()
+    drive.move(-16)
+    drive.move(8.5, steering=100)
+    drive.move(20)
+    drive.move(4.25, steering=100)
+
+def mission_11_3():
+    '''
+    водохранилище(вешаем)
+    '''
+    drive.move(3)
+    a_line(30, power=30)
+    drive.move(30, steering=3)
+    manipulator_11.run_to_position(210)
+    drive.move(-7)
+    manipulator_11.run_to_position(227)
+    drive.move(10)
+    manipulator_11.run_to_position(120)
+    drive.move(-7)
+    down()
+    up()
+    drive.move(5)
+    drive.move(12.75, steering=-100)
+    manipulator_11.run_to_position(120)
+    drive.move(-58)
+
+def mission_2_2_and_12():
+    '''
+    грузовик и в центр
+    '''
+    drive.move(20)
+    a_line(black=True)
+    drive.move(2)
+    right()
+    a_line(amount=30)
+    drive.move(4.25, steering=100)
+    drive.move(20)
+
+mission_2_2_and_12()
