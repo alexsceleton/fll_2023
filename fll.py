@@ -1,4 +1,4 @@
-# LEGO type:standard slot:1 
+# LEGO type:standard slot:7
 # autostart
 from spike import PrimeHub, MotorPair, Motor, ColorSensor, LightMatrix
 from spike.control import Timer
@@ -95,7 +95,7 @@ def mission_6():
     drive.move(21)
     a_line(23)
     drive.move(6, steering=100)
-    drive.move(10)
+    drive.move(8)
     manipulator.run_to_position(302)
     down()
     print('Elapsed time:', timer.now())
@@ -273,13 +273,13 @@ def mission_3_2():
     left()
     drive.move(2)
     drive.move(4.25, steering=100)
-    drive.move(-1.8)
+    drive.move(-1.6)
     manipulator.run_to_position(220, CTRL_CLOCK, 30)
     drive.move(-7)
     drive.move(3, steering=100)
     drive.move(20)
     drive.move(6.5, steering=100)
-    drive.move(60)
+    drive.move(60,speed=100)
 
 def mission_15_right():
     '''
@@ -391,7 +391,7 @@ def group_7():
     mission_6()
     mission_2_3_and_12()
 
-group_1()
+group_7()
 print('Elapsed time: ', timer.now())
 
 # 6
